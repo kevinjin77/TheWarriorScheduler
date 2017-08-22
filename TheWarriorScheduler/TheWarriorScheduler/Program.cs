@@ -15,7 +15,6 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
-            //Console.ReadLine
             RunAsync().Wait();
         }
 
@@ -30,7 +29,6 @@ namespace TheWarriorScheduler
             Console.WriteLine("Each course should have the format of Subject ClassNumber. For example, \"CS 245\".");
             for (int i = 0; i < numCourses; ++i)
             {
-                //courseList.Add(Console.ReadLine());
                 try
                 {
                     var arguments = Console.ReadLine().Split(' ');
@@ -55,10 +53,10 @@ namespace TheWarriorScheduler
                 }
             }
 
+            //ScheduleHelper schedules = responseList.generateAllSchedules();
+            //PrintSchedules(schedules);
+
             Console.WriteLine(responseList[0].data[0].type);
-            //var data = await GetContentAsync("https://api.uwaterloo.ca/v2/courses/CS/245/schedule.json?term=1171&key=a0fa5a0445627c840d18a3cf30d89995");
-            //var test = new JavaScriptSerializer().Deserialize<Response>(data);
-            //Console.WriteLine(test.data[0].subject);
         }
 
         static async Task<string> GetContentAsync(string url)
