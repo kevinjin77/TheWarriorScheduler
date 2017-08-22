@@ -23,7 +23,7 @@ namespace TheWarriorScheduler
         {
             string apiKey = "a0fa5a0445627c840d18a3cf30d89995";
             string term = "1179";
-            List<Response> reponseList = new List<Response>();
+            List<CourseList> responseList = new List<CourseList>();
             Console.WriteLine("How many courses are you taking this term?");
             int numCourses = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine($"\nPlease enter the names of your {numCourses} courses:");
@@ -31,21 +31,31 @@ namespace TheWarriorScheduler
             for (int i = 0; i < numCourses; ++i)
             {
                 //courseList.Add(Console.ReadLine());
-                var arguments = Console.ReadLine().Split(' ');
-                StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/courses/");
-                requestString.Append($"{arguments[0]}/{arguments[1]}/schedule.json?term={term}&key={apiKey}");
-                var data = await GetContentAsync(requestString.ToString());
-                var dataJSON = new JavaScriptSerializer().Deserialize<Response>(data);
-                if (dataJSON.data.Count == 0)
+                try
                 {
-                    Console.WriteLine($"{arguments[0]} {arguments[1]} does not exist/is not being offered this term! Please enter a valid course.\n");
+                    var arguments = Console.ReadLine().Split(' ');
+                    StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/courses/");
+                    requestString.Append($"{arguments[0]}/{arguments[1]}/schedule.json?term={term}&key={apiKey}");
+                    var data = await GetContentAsync(requestString.ToString());
+                    var dataJSON = new JavaScriptSerializer().Deserialize<CourseList>(data);
+                    if (dataJSON.data.Count == 0)
+                    {
+                        Console.WriteLine($"\n{arguments[0]} {arguments[1]} does not exist/is not being offered this term! Please enter a valid course:");
+                        i--;
+                    }
+                    else
+                    {
+                        responseList.Add(dataJSON);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\nPlease enter a course with the valid format:");
                     i--;
-                } else
-                {
-                    reponseList.Add(dataJSON);
                 }
             }
 
+            Console.WriteLine(responseList[0].data[0].type);
             //var data = await GetContentAsync("https://api.uwaterloo.ca/v2/courses/CS/245/schedule.json?term=1171&key=a0fa5a0445627c840d18a3cf30d89995");
             //var test = new JavaScriptSerializer().Deserialize<Response>(data);
             //Console.WriteLine(test.data[0].subject);

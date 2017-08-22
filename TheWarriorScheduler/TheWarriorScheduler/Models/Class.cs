@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TheWarriorScheduler
 {
-    class CourseList
+    public class Class
     {
-        public string Name { get; set; }
-        public List<Course> Courses { get; set; }
+        public Date date { get; set; }
+        public Location location { get; set; }
+        public List<object> instructors { get; set; }
     }
 }
