@@ -8,5 +8,9 @@ namespace TheWarriorScheduler
 {
     class ScheduleHelper
     {
+        public bool isConflict(Course c1, Course c2)
+        {
+            c1.
+        }
     }
 }

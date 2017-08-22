@@ -32,8 +32,8 @@ namespace TheWarriorScheduler
                 try
                 {
                     var arguments = Console.ReadLine().Split(' ');
-                    StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/courses/");
-                    requestString.Append($"{arguments[0]}/{arguments[1]}/schedule.json?term={term}&key={apiKey}");
+                    StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/terms/");
+                    requestString.Append($"{term}/{arguments[0]}/{arguments[1]}/schedule.json?key={apiKey}");
                     var data = await GetContentAsync(requestString.ToString());
                     var dataJSON = new JavaScriptSerializer().Deserialize<CourseList>(data);
                     if (dataJSON.data.Count == 0)
