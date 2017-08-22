@@ -15,17 +15,40 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
-            string api_key = "a0fa5a0445627c840d18a3cf30d89995";
             //Console.ReadLine
             RunAsync().Wait();
         }
 
         static async Task RunAsync()
         {
-            var data = await GetContentAsync("https://api.uwaterloo.ca/v2/courses/CS/245/schedule.json?term=1171&key=a0fa5a0445627c840d18a3cf30d89995");
-            List<Course> Courselist;
-            var example2Model = new JavaScriptSerializer().Deserialize<CourseList>(data);
-            Console.WriteLine(data);
+            string apiKey = "a0fa5a0445627c840d18a3cf30d89995";
+            string term = "1179";
+            List<Response> reponseList = new List<Response>();
+            Console.WriteLine("How many courses are you taking this term?");
+            int numCourses = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine($"\nPlease enter the names of your {numCourses} courses:");
+            Console.WriteLine("Each course should have the format of Subject ClassNumber. For example, \"CS 245\".");
+            for (int i = 0; i < numCourses; ++i)
+            {
+                //courseList.Add(Console.ReadLine());
+                var arguments = Console.ReadLine().Split(' ');
+                StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/courses/");
+                requestString.Append($"{arguments[0]}/{arguments[1]}/schedule.json?term={term}&key={apiKey}");
+                var data = await GetContentAsync(requestString.ToString());
+                var dataJSON = new JavaScriptSerializer().Deserialize<Response>(data);
+                if (dataJSON.data.Count == 0)
+                {
+                    Console.WriteLine($"{arguments[0]} {arguments[1]} does not exist/is not being offered this term! Please enter a valid course.\n");
+                    i--;
+                } else
+                {
+                    reponseList.Add(dataJSON);
+                }
+            }
+
+            //var data = await GetContentAsync("https://api.uwaterloo.ca/v2/courses/CS/245/schedule.json?term=1171&key=a0fa5a0445627c840d18a3cf30d89995");
+            //var test = new JavaScriptSerializer().Deserialize<Response>(data);
+            //Console.WriteLine(test.data[0].subject);
         }
 
         static async Task<string> GetContentAsync(string url)
