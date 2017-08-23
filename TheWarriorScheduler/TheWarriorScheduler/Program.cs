@@ -53,6 +53,9 @@ namespace TheWarriorScheduler
                 }
             }
 
+            ScheduleHelper schedules = new ScheduleHelper();
+            bool test = schedules.isConflict(responseList[0].data[1], responseList[0].data[2]);
+
             //ScheduleHelper schedules = responseList.generateAllSchedules();
             //PrintSchedules(schedules);
 
