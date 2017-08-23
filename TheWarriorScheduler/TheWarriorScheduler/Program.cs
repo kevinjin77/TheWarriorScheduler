@@ -7,6 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
+// TODO:
+// Add Rating System for generated schedule:
+//   - Professor Rating (RateMyProf)
+//   - Distance Rating (Based on distance between buildings)
+//   - Gap Rating (Based on number of small gaps)
+//   - Lunch Rating (Based on time allocated for lunch)
+//   - Early Bird/Night Owl
+
+
 namespace TheWarriorScheduler
 {
     class Program
