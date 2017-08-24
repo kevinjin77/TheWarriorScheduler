@@ -65,6 +65,9 @@ namespace TheWarriorScheduler
             ScheduleHelper schedules = new ScheduleHelper();
             bool test = schedules.isConflict(responseList[0].data[1], responseList[0].data[2]);
 
+            List<int> myList = new List<int>(new int[] { 3, 4, 9, 12 });
+            List<List<int>> result = schedules.generateCombinations(myList);
+
             //ScheduleHelper schedules = responseList.generateAllSchedules();
             //PrintSchedules(schedules);
 
@@ -84,5 +87,31 @@ namespace TheWarriorScheduler
             }
             return product;
         }
+
+        //public static List<List<int>> GetSubsetsOfSizeK(List<int> lInputSet, int k)
+        //{
+        //    List<List<int>> lSubsets = new List<List<int>>();
+        //    GetSubsetsOfSizeK_rec(lInputSet, k, 0, new List<int>(), lSubsets);
+        //    return lSubsets;
+        //}
+
+        //public static void GetSubsetsOfSizeK_rec(List<int> lInputSet, int k, int i, List<int> lCurrSet, List<List<int>> lSubsets)
+        //{
+        //    if (lCurrSet.Count == k)
+        //    {
+        //        lSubsets.Add(lCurrSet);
+        //        return;
+        //    }
+
+        //    if (i >= lInputSet.Count)
+        //        return;
+
+        //    List<int> lWith = new List<int>(lCurrSet);
+        //    List<int> lWithout = new List<int>(lCurrSet);
+        //    lWith.Add(lInputSet[i++]);
+
+        //    GetSubsetsOfSizeK_rec(lInputSet, k, i, lWith, lSubsets);
+        //    GetSubsetsOfSizeK_rec(lInputSet, k, i, lWithout, lSubsets);
+        //}
     }
 }

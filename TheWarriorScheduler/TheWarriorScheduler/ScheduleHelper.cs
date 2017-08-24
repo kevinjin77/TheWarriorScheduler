@@ -71,5 +71,27 @@ namespace TheWarriorScheduler
             }
             return false;
         }
+
+        public List<List<int>> generateCombinations(List<int> sizes)
+        {
+            int[][] initArray = new int[sizes.Count][];
+            for (int i = 0; i < sizes.Count; ++i)
+            {
+                initArray[i] = (Enumerable.Range(1, sizes[i]).ToArray());
+            }
+
+            var cross = new CartesianProduct<int>(initArray);
+            List<List<int>> result = new List<List<int>>();
+            foreach (var item in cross.Get())
+            {
+                List<int> myList = new List<int>();
+                foreach (int num in item)
+                {
+                    myList.Add(num);
+                }
+                result.Add(myList);
+            }
+            return result;
+        }
     }
 }
