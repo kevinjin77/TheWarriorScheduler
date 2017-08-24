@@ -63,10 +63,12 @@ namespace TheWarriorScheduler
             }
 
             ScheduleHelper schedules = new ScheduleHelper();
+            List<Schedule> resulter = new List<Schedule>();
+            resulter = schedules.generateSchedules(responseList);
             bool test = schedules.isConflict(responseList[0].data[1], responseList[0].data[2]);
 
-            List<int> myList = new List<int>(new int[] { 3, 4, 9, 12 });
-            List<List<int>> result = schedules.generateCombinations(myList);
+            //List<int> myList = new List<int>(new int[] { 3, 4, 9, 12 });
+            //List<List<int>> result = schedules.generateCombinations(myList);
 
             //ScheduleHelper schedules = responseList.generateAllSchedules();
             //PrintSchedules(schedules);

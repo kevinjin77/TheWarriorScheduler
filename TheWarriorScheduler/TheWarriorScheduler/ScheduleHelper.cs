@@ -17,7 +17,7 @@ namespace TheWarriorScheduler
                 dayList.Add("M");
                 index++;
             }
-            if (index < weekdays.Length && weekdays[index] == 'T' && weekdays[index + 1] != 'h')
+            if (index < weekdays.Length && weekdays[index] == 'T' && (index + 1 == weekdays.Length ? true : weekdays[index + 1] != 'h'))
             {
                 dayList.Add("T");
                 index++;
@@ -27,7 +27,7 @@ namespace TheWarriorScheduler
                 dayList.Add("W");
                 index++;
             }
-            if ((index + 1) < weekdays.Length && weekdays[index] == 'T' && weekdays[index + 1] == 'h')
+            if ((index + 1) < weekdays.Length && weekdays[index] == 'T' && (index + 1 == weekdays.Length ? true : weekdays[index + 1] != 'h'))
             {
                 dayList.Add("Th");
                 index += 2;
@@ -72,24 +72,51 @@ namespace TheWarriorScheduler
             return false;
         }
 
-        public List<List<int>> generateCombinations(List<int> sizes)
+        public bool isScheduleValid(Schedule s1)
         {
+            for (int i = 0; i < s1.Courses.Count - 1; ++i)
+            {
+                for (int j = i + 1; j < s1.Courses.Count; ++j)
+                {
+                    if(isConflict(s1.Courses[i], s1.Courses[j]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public List<Schedule> generateSchedules(List<CourseList> responseList)
+        {
+            List<int> sizes = new List<int>();
+            foreach (CourseList cList in responseList)
+            {
+                sizes.Add(cList.data.Count);
+            }
             int[][] initArray = new int[sizes.Count][];
             for (int i = 0; i < sizes.Count; ++i)
             {
-                initArray[i] = (Enumerable.Range(1, sizes[i]).ToArray());
+                initArray[i] = (Enumerable.Range(0, sizes[i] - 1).ToArray());
             }
 
             var cross = new CartesianProduct<int>(initArray);
-            List<List<int>> result = new List<List<int>>();
+            List<Schedule> result = new List<Schedule>();
             foreach (var item in cross.Get())
             {
-                List<int> myList = new List<int>();
+                Schedule mySchedule = new Schedule();
+                //List<int> myList = new List<int>();
+                int count = 0;
                 foreach (int num in item)
                 {
-                    myList.Add(num);
+                    mySchedule.Courses.Add(responseList[count].data[num]);
+                    ++count;
+                    //myList.Add(num);
                 }
-                result.Add(myList);
+                if (isScheduleValid(mySchedule))
+                {
+                    result.Add(mySchedule);
+                }
             }
             return result;
         }

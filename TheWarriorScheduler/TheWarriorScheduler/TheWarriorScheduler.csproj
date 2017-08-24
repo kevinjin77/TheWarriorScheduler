@@ -51,6 +51,7 @@
     <Compile Include="Models\Location.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
     <Compile Include="ScheduleHelper.cs" />
   </ItemGroup>
   <ItemGroup>
