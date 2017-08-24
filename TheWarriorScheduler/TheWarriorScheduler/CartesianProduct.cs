@@ -15,7 +15,7 @@ namespace TheWarriorScheduler
         {
             lengths = arrays.Select(k => k.Length).ToArray();
             if (lengths.Any(l => l == 0))
-                throw new ArgumentException("Zero lenght array unhandled.");
+                throw new ArgumentException("Zero length array unhandled.");
             this.arrays = arrays;
         }
         public IEnumerable<T[]> Get()

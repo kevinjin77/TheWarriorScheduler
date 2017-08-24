@@ -57,6 +57,10 @@ namespace TheWarriorScheduler
 
         public bool isConflict(Course c1, Course c2)
         {
+            if (c1.type != "LEC" || c2.type != "LEC")
+            {
+                return true;
+            }
             Date c1Date = c1.classes[0].date;
             Date c2Date = c2.classes[0].date;
             List<string> c1List = processDate(c1Date.weekdays);
@@ -115,6 +119,7 @@ namespace TheWarriorScheduler
                 }
                 if (isScheduleValid(mySchedule))
                 {
+                    mySchedule.printSchedule();
                     result.Add(mySchedule);
                 }
             }

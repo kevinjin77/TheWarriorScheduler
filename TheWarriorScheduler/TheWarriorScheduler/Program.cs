@@ -13,7 +13,8 @@ using System.Web.Script.Serialization;
 //   - Distance Rating (Based on distance between buildings)
 //   - Gap Rating (Based on number of small gaps)
 //   - Lunch Rating (Based on time allocated for lunch)
-//   - Early Bird/Night Owl
+//   - Early Bird/Night Owl (No 8:30 Classes, if possible)
+//   - Proximity Rating (Least number of changes)
 
 
 namespace TheWarriorScheduler
@@ -23,11 +24,6 @@ namespace TheWarriorScheduler
         static HttpClient client = new HttpClient();
 
         static void Main(string[] args)
-        {
-            RunAsync().Wait();
-        }
-
-        static async Task RunAsync()
         {
             string apiKey = "a0fa5a0445627c840d18a3cf30d89995";
             string term = "1179";
@@ -43,7 +39,7 @@ namespace TheWarriorScheduler
                     var arguments = Console.ReadLine().Split(' ');
                     StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/terms/");
                     requestString.Append($"{term}/{arguments[0]}/{arguments[1]}/schedule.json?key={apiKey}");
-                    var data = await GetContentAsync(requestString.ToString());
+                    var data = GetContentAsync(requestString.ToString()).Result;
                     var dataJSON = new JavaScriptSerializer().Deserialize<CourseList>(data);
                     if (dataJSON.data.Count == 0)
                     {
@@ -65,13 +61,8 @@ namespace TheWarriorScheduler
             ScheduleHelper schedules = new ScheduleHelper();
             List<Schedule> resulter = new List<Schedule>();
             resulter = schedules.generateSchedules(responseList);
+            Console.ReadLine();
             bool test = schedules.isConflict(responseList[0].data[1], responseList[0].data[2]);
-
-            //List<int> myList = new List<int>(new int[] { 3, 4, 9, 12 });
-            //List<List<int>> result = schedules.generateCombinations(myList);
-
-            //ScheduleHelper schedules = responseList.generateAllSchedules();
-            //PrintSchedules(schedules);
 
             Console.WriteLine(responseList[0].data[0].type);
         }
@@ -89,31 +80,5 @@ namespace TheWarriorScheduler
             }
             return product;
         }
-
-        //public static List<List<int>> GetSubsetsOfSizeK(List<int> lInputSet, int k)
-        //{
-        //    List<List<int>> lSubsets = new List<List<int>>();
-        //    GetSubsetsOfSizeK_rec(lInputSet, k, 0, new List<int>(), lSubsets);
-        //    return lSubsets;
-        //}
-
-        //public static void GetSubsetsOfSizeK_rec(List<int> lInputSet, int k, int i, List<int> lCurrSet, List<List<int>> lSubsets)
-        //{
-        //    if (lCurrSet.Count == k)
-        //    {
-        //        lSubsets.Add(lCurrSet);
-        //        return;
-        //    }
-
-        //    if (i >= lInputSet.Count)
-        //        return;
-
-        //    List<int> lWith = new List<int>(lCurrSet);
-        //    List<int> lWithout = new List<int>(lCurrSet);
-        //    lWith.Add(lInputSet[i++]);
-
-        //    GetSubsetsOfSizeK_rec(lInputSet, k, i, lWith, lSubsets);
-        //    GetSubsetsOfSizeK_rec(lInputSet, k, i, lWithout, lSubsets);
-        //}
     }
 }
