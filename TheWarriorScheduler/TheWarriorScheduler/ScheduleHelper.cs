@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TheWarriorScheduler
 {
-    public class ScheduleHelper
+    public static class ScheduleHelper
     {
-        public List<string> processDate(string weekdays)
+        public static List<string> processDate(string weekdays)
         {
             int index = 0;
             List<string> dayList = new List<string>();
@@ -41,7 +41,7 @@ namespace TheWarriorScheduler
             return dayList;
         }
 
-        private bool isTimeConflict(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        private static bool isTimeConflict(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
         {
             if ((DateTime.Compare(start1, end2) <= 0) && (DateTime.Compare(end1, start2) >= 0))
             {
@@ -50,7 +50,7 @@ namespace TheWarriorScheduler
             return false;
         }
 
-        private bool isConflict(Course c1, Course c2)
+        private static bool isConflict(Course c1, Course c2)
         {
             if (c1.type != "LEC" || c2.type != "LEC")
             {
@@ -67,7 +67,7 @@ namespace TheWarriorScheduler
             return false;
         }
 
-        private bool isScheduleValid(Schedule s1)
+        private static bool isScheduleValid(Schedule s1)
         {
             for (int i = 0; i < s1.Courses.Count - 1; ++i)
             {
@@ -82,7 +82,7 @@ namespace TheWarriorScheduler
             return true;
         }
 
-        public List<Schedule> generateSchedules(List<CourseList> responseList)
+        public static List<Schedule> generateSchedules(List<CourseList> responseList)
         {
             List<int> sizes = new List<int>();
             foreach (CourseList cList in responseList)

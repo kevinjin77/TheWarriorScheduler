@@ -10,7 +10,7 @@ using System.Web.Script.Serialization;
 // TODO:
 // Add Rating System for generated schedule:
 //   - Professor Rating (Need a way to get ratings off of RateMyProf)
-//   - Distance Rating (Based on distance between buildings)
+//   - Distance Rating (Based on distance between buildings using API to get lat/longitude and then using Google Maps)
 //   - Gap Rating (Based on number of small gaps)
 //   - Lunch Rating (Based on time allocated for lunch)
 //   - Early Bird/Night Owl (No 8:30 Classes, if possible)
@@ -29,7 +29,8 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
-            string apiKey = "a0fa5a0445627c840d18a3cf30d89995";
+            string uwApiKey = "a0fa5a0445627c840d18a3cf30d89995";
+            string googleApiKey = "AIzaSyCcO39He0FpIJctRGX8O5xEq5mZntYKZLk";
             string term = "1179";
             List<CourseList> responseList = new List<CourseList>();
             Console.WriteLine("How many courses are you taking this term?");
@@ -42,7 +43,7 @@ namespace TheWarriorScheduler
                 {
                     var arguments = Console.ReadLine().Split(' ');
                     StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/terms/");
-                    requestString.Append($"{term}/{arguments[0]}/{arguments[1]}/schedule.json?key={apiKey}");
+                    requestString.Append($"{term}/{arguments[0]}/{arguments[1]}/schedule.json?key={uwApiKey}");
                     var data = GetContentAsync(requestString.ToString()).Result;
                     var dataJSON = new JavaScriptSerializer().Deserialize<CourseList>(data);
                     if (dataJSON.data.Count == 0)
@@ -63,9 +64,8 @@ namespace TheWarriorScheduler
                 }
             }
 
-            ScheduleHelper schedules = new ScheduleHelper();
             List<Schedule> resulter = new List<Schedule>();
-            resulter = schedules.generateSchedules(responseList);
+            resulter = ScheduleHelper.generateSchedules(responseList);
             resulter[resulter.Count - 1].calculateGapRating();
             ScheduleStats stats = resulter[0].ComputeStats();
             Console.ReadLine();

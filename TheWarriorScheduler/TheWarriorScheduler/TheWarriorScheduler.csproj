@@ -43,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Building.cs" />
     <Compile Include="CartesianProduct.cs" />
+    <Compile Include="LocationHelper.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseList.cs" />
     <Compile Include="Models\Date.cs" />
+    <Compile Include="Models\GoogleResponse.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

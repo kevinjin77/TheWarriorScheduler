@@ -42,8 +42,7 @@ namespace TheWarriorScheduler
         public List<string> weekdays
         {
             get {
-                ScheduleHelper helper = new ScheduleHelper();
-                return helper.processDate(this.classes[0].date.weekdays);
+                return ScheduleHelper.processDate(this.classes[0].date.weekdays);
             }
         }
         public DateTime start_time
@@ -65,6 +64,13 @@ namespace TheWarriorScheduler
             get
             {
                 return this.classes[0].instructors.Count == 0 ? "" : this.classes[0].instructors[0].ToString();
+            }
+        }
+        public string building
+        {
+            get
+            {
+                return this.classes[0].location.building + " " + this.classes[0].location.room;
             }
         }
     }

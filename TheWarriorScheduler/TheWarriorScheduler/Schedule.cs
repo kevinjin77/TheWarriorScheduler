@@ -10,10 +10,14 @@ namespace TheWarriorScheduler
     {
         public void printSchedule()
         {
+            Schedule s = new Schedule();
             foreach(Course c in Courses)
             {
-                Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} " + (c.classes[0].instructors.Count == 0 ? " " : c.classes[0].instructors[0]));
+                Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
+                    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.building}");
+                s.Courses.Add(c);
             }
+            Console.WriteLine(String.Join(",", s.calculateGapRating()));
             Console.WriteLine("\n");
         }
         private void getGaps(List<DateTime> times, List<int> gapList)
@@ -72,7 +76,16 @@ namespace TheWarriorScheduler
             getGaps(wTimes, gapList);
             getGaps(thTimes, gapList);
             getGaps(fTimes, gapList);
-            return 2;
+
+            int count = 0;
+            foreach (int num in gapList)
+            {
+                if (num > 10 && num <= 70)
+                {
+                    ++count;
+                }
+            }
+            return count;
         }
         public ScheduleStats ComputeStats()
         {
