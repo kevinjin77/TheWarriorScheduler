@@ -29,6 +29,7 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
+            int test = LocationHelper.distanceInSeconds("MC", "AL");
             string uwApiKey = "a0fa5a0445627c840d18a3cf30d89995";
             string googleApiKey = "AIzaSyCcO39He0FpIJctRGX8O5xEq5mZntYKZLk";
             string term = "1179";
