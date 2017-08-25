@@ -9,12 +9,16 @@ using System.Web.Script.Serialization;
 
 // TODO:
 // Add Rating System for generated schedule:
-//   - Professor Rating (RateMyProf)
+//   - Professor Rating (Need a way to get ratings off of RateMyProf)
 //   - Distance Rating (Based on distance between buildings)
 //   - Gap Rating (Based on number of small gaps)
 //   - Lunch Rating (Based on time allocated for lunch)
 //   - Early Bird/Night Owl (No 8:30 Classes, if possible)
-//   - Proximity Rating (Least number of changes)
+//   - Proximity Rating (Least number of changes from current schedule, if given one)
+
+//   - Include TUT, TST in Schedule
+//   - Accomodate ENG Classes (One Lecture, Multiple Classes)
+//   - Show Open Classes Only (Or Red Dot if class if full, eventually take reserves into account"
 
 
 namespace TheWarriorScheduler
@@ -53,6 +57,7 @@ namespace TheWarriorScheduler
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     Console.WriteLine($"\nPlease enter a course with the valid format:");
                     i--;
                 }
@@ -61,10 +66,9 @@ namespace TheWarriorScheduler
             ScheduleHelper schedules = new ScheduleHelper();
             List<Schedule> resulter = new List<Schedule>();
             resulter = schedules.generateSchedules(responseList);
+            resulter[resulter.Count - 1].calculateGapRating();
+            ScheduleStats stats = resulter[0].ComputeStats();
             Console.ReadLine();
-            bool test = schedules.isConflict(responseList[0].data[1], responseList[0].data[2]);
-
-            Console.WriteLine(responseList[0].data[0].type);
         }
 
         static async Task<string> GetContentAsync(string url)

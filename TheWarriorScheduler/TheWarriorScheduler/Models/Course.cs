@@ -35,5 +35,37 @@ namespace TheWarriorScheduler
         {
             get { return section.Substring(0, 3); }
         }
+        public bool is_full
+        {
+            get { return enrollment_capacity >= enrollment_total ? true : false; }
+        }
+        public List<string> weekdays
+        {
+            get {
+                ScheduleHelper helper = new ScheduleHelper();
+                return helper.processDate(this.classes[0].date.weekdays);
+            }
+        }
+        public DateTime start_time
+        {
+            get
+            {
+                return DateTime.ParseExact(this.classes[0].date.start_time, "HH:mm", null); 
+            }
+        }
+        public DateTime end_time
+        {
+            get
+            {
+                return DateTime.ParseExact(this.classes[0].date.end_time, "HH:mm", null);
+            }
+        }
+        public string instructor
+        {
+            get
+            {
+                return this.classes[0].instructors.Count == 0 ? "" : this.classes[0].instructors[0].ToString();
+            }
+        }
     }
 }
