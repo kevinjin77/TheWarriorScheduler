@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 //   - Lunch Rating (Based on time allocated for lunch)
 //   - Early Bird/Night Owl (No 8:30 Classes, if possible)
 //   - Proximity Rating (Least number of changes from current schedule, if given one)
+//   - Scale Individual Ratings out of 100, scale overall ratings based on importance (Professor Rating > Gap Rating)
 
 //   - Include TUT, TST in Schedule
 //   - Accomodate ENG Classes (One Lecture, Multiple Classes)
@@ -29,7 +30,7 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
-            int test = LocationHelper.distanceInSeconds("MC", "AL");
+            int test = LocationHelper.distanceInSeconds("AL", "MC");
             string uwApiKey = "a0fa5a0445627c840d18a3cf30d89995";
             string googleApiKey = "AIzaSyCcO39He0FpIJctRGX8O5xEq5mZntYKZLk";
             string term = "1179";
@@ -67,7 +68,11 @@ namespace TheWarriorScheduler
 
             List<Schedule> resulter = new List<Schedule>();
             resulter = ScheduleHelper.generateSchedules(responseList);
-            resulter[resulter.Count - 1].calculateGapRating();
+            resulter = sortSchedules(resulter);
+            for (int i = 0; i < resulter.Count; ++i)
+            {
+                resulter[i].printSchedule();
+            }
             ScheduleStats stats = resulter[0].ComputeStats();
             Console.ReadLine();
         }
@@ -84,6 +89,12 @@ namespace TheWarriorScheduler
                 product = await response.Content.ReadAsStringAsync();
             }
             return product;
+        }
+
+        public static List<Schedule> sortSchedules(List<Schedule> scheduleList)
+        {
+            List<Schedule> newList = scheduleList.OrderByDescending(x => x.Rating).ToList();
+            return newList;
         }
     }
 }

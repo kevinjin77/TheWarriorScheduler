@@ -70,6 +70,13 @@ namespace TheWarriorScheduler
         {
             get
             {
+                return this.classes[0].location.building;
+            }
+        }
+        public string classroom
+        {
+            get
+            {
                 return this.classes[0].location.building + " " + this.classes[0].location.room;
             }
         }

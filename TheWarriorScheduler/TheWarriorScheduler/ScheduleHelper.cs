@@ -110,7 +110,7 @@ namespace TheWarriorScheduler
                 }
                 if (isScheduleValid(mySchedule))
                 {
-                    mySchedule.printSchedule();
+                    //mySchedule.printSchedule();
                     result.Add(mySchedule);
                 }
             }
