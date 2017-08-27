@@ -82,6 +82,12 @@ namespace TheWarriorScheduler
             return true;
         }
 
+        public static List<Schedule> sortSchedules(List<Schedule> scheduleList)
+        {
+            List<Schedule> newList = scheduleList.OrderByDescending(x => x.Rating).ToList();
+            return newList;
+        }
+
         public static List<Schedule> generateSchedules(List<CourseList> responseList)
         {
             List<int> sizes = new List<int>();
@@ -114,6 +120,7 @@ namespace TheWarriorScheduler
                     result.Add(mySchedule);
                 }
             }
+            result = sortSchedules(result);
             return result;
         }
     }

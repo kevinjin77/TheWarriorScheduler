@@ -68,7 +68,7 @@ namespace TheWarriorScheduler
 
             List<Schedule> resulter = new List<Schedule>();
             resulter = ScheduleHelper.generateSchedules(responseList);
-            resulter = sortSchedules(resulter);
+            //resulter = sortSchedules(resulter);
             for (int i = 0; i < resulter.Count; ++i)
             {
                 resulter[i].printSchedule();
