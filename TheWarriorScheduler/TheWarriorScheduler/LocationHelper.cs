@@ -22,6 +22,14 @@ namespace TheWarriorScheduler
 
         private static Coordinates getCoords(string building)
         {
+            foreach (BuildingObj b in buildingsCache)
+            {
+                if (b.name == building)
+                {
+                    return b.coords;
+                }
+            }
+
             StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/buildings/");
             requestString.Append($"{building}.json?key={uwApiKey}");
             var response = GetContentAsync(requestString.ToString()).Result;
@@ -29,10 +37,24 @@ namespace TheWarriorScheduler
             Coordinates coords = new Coordinates();
             coords.latitude = responseJSON.data.latitude;
             coords.longitude = responseJSON.data.longitude;
+
+            BuildingObj myBuilding = new BuildingObj();
+            myBuilding.name = building;
+            myBuilding.coords = coords;
+            buildingsCache.Add(myBuilding);
+
             return coords;
         }
 
         public static int distanceInSeconds(string building1, string building2) {
+            foreach (Directions d in directionsCache)
+            {
+                if ((d.building1 == building1 && d.building2 == building2) || (d.building1 == building2 && d.building2 == building1))
+                {
+                    return d.seconds;
+                }
+            }
+
             string lat1 = getCoords(building1).latitude.ToString();
             string long1 = getCoords(building1).longitude.ToString();
             string lat2 = getCoords(building2).latitude.ToString();
@@ -41,7 +63,14 @@ namespace TheWarriorScheduler
             requestString.Append($"origin={lat1},{long1}&destination={lat2},{long2}&mode=walking&key={googleApiKey}");
             var response = GetContentAsync(requestString.ToString()).Result;
             var responseJSON = new JavaScriptSerializer().Deserialize<GoogleResponse>(response);
-            return responseJSON.routes[0].legs[0].duration.value;
+
+            Directions myDirections = new Directions();
+            myDirections.building1 = building1;
+            myDirections.building2 = building2;
+            myDirections.seconds = responseJSON.routes[0].legs[0].duration.value;
+            directionsCache.Add(myDirections);
+
+            return myDirections.seconds;
         }
 
         static async Task<string> GetContentAsync(string url)
@@ -57,5 +86,21 @@ namespace TheWarriorScheduler
             }
             return product;
         }
+
+        public class BuildingObj
+        {
+            public string name;
+            internal Coordinates coords;
+        }
+
+        public class Directions
+        {
+            public string building1;
+            public string building2;
+            public int seconds;
+        }
+
+        public static List<BuildingObj> buildingsCache = new List<BuildingObj>();
+        public static List<Directions> directionsCache = new List<Directions>();
     }
 }

@@ -26,9 +26,9 @@ namespace TheWarriorScheduler
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(@"test.txt", true))
             {
-                file.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Overall: {s.Rating}");
+                file.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Distance: {s.distanceRating}, Overall: {s.Rating}");
             }
-            Console.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Overall: {s.Rating}");
+            Console.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Distance: {s.distanceRating}, Overall: {s.Rating}");
             //Console.WriteLine(String.Join(",", s.calculateGapRating()));
             //Console.WriteLine(String.Join(",", s.calculateDistanceRating()));
             Console.WriteLine("\n");
@@ -65,7 +65,7 @@ namespace TheWarriorScheduler
                 return;
             }
 
-            times = times.OrderBy(x => x.TimeOfDay).ToList();
+            //times = times.OrderBy(x => x.TimeOfDay).ToList();
 
             for (int i = 1; i < times.Count - 1; i += 2)
             {
@@ -101,7 +101,7 @@ namespace TheWarriorScheduler
 
         private int getLunchRating(List<DateTime> times)
         {
-            times = times.OrderBy(x => x.TimeOfDay).ToList();
+            //times = times.OrderBy(x => x.TimeOfDay).ToList();
 
             if ((times.Count == 0) || (dateToInt(times[0]) >= 720) || (dateToInt(times[times.Count - 1]) <= 810))
             {
@@ -152,16 +152,34 @@ namespace TheWarriorScheduler
             }
         }
 
-        private List<int> calculateDistanceRating()
+        private double calculateDistanceRatingByCourseList(List<Course> courseList)
         {
-            List<int> gapList = new List<int>();
-            getDistances(sortCoursesByTime(this.mCourses), gapList);
-            getDistances(sortCoursesByTime(this.tCourses), gapList);
-            getDistances(sortCoursesByTime(this.wCourses), gapList);
-            getDistances(sortCoursesByTime(this.thCourses), gapList);
-            getDistances(sortCoursesByTime(this.fCourses), gapList);
+            double result = 0;
+            if (courseList.Count > 1)
+            {
+                for (int i = 0; i < courseList.Count - 1; ++i)
+                {
+                    int gap = Convert.ToInt32(Math.Abs(courseList[i].end_time.Subtract(courseList[i + 1].start_time).TotalMinutes));
+                    if (gap <= 10)
+                    {
+                        int seconds = LocationHelper.distanceInSeconds(courseList[i].building, courseList[i + 1].building);
+                        if (seconds >= 200)
+                        {
+                            result -= (200 - seconds);
+                        }
+                    }
+                }
+            }
+            return result / 120;
+        }
 
-            return gapList;
+        private double calculateDistanceRating()
+        {
+            return calculateDistanceRatingByCourseList(this.mCourses)
+                + calculateDistanceRatingByCourseList(this.tCourses)
+                + calculateDistanceRatingByCourseList(this.wCourses)
+                + calculateDistanceRatingByCourseList(this.thCourses)
+                + calculateDistanceRatingByCourseList(this.fCourses);
         }
 
         private List<Course> sortCoursesByTime(List<Course> courseList)
@@ -194,15 +212,15 @@ namespace TheWarriorScheduler
         }
 
         private List<Course> mCourses
-        { get { return processSchedule("M"); } }
+        { get { return sortCoursesByTime(processSchedule("M")); } }
         private List<Course> tCourses
-        { get { return processSchedule("T"); } }
+        { get { return sortCoursesByTime(processSchedule("T")); } }
         private List<Course> wCourses
-        { get { return processSchedule("W"); } }
+        { get { return sortCoursesByTime(processSchedule("W")); } }
         private List<Course> thCourses
-        { get { return processSchedule("Th"); } }
+        { get { return sortCoursesByTime(processSchedule("Th")); } }
         private List<Course> fCourses
-        { get { return processSchedule("F"); } }
+        { get { return sortCoursesByTime(processSchedule("F")); } }
 
         private List<DateTime> mTimes
         { get { return toTimes(this.mCourses); } }
@@ -224,8 +242,11 @@ namespace TheWarriorScheduler
         public float professorRating
         { get { return this.calculateProfessorRating() * 20; } }
 
+        public double distanceRating
+        { get { return this.calculateDistanceRating(); } }
+
         public double Rating
-        { get { return Math.Round(this.gapRating + this.lunchRating + this.professorRating, 2); } }
+        { get { return Math.Round(this.gapRating + this.lunchRating + this.professorRating + this.distanceRating, 2); } }
 
         public List<Course> Courses = new List<Course>();
     }
