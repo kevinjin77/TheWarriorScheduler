@@ -20,7 +20,7 @@ namespace TheWarriorScheduler
                 //    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom}");
                 //}
                 Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
-                    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom}");
+                    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 s.Courses.Add(c);
             }
             //using (System.IO.StreamWriter file =
@@ -28,7 +28,7 @@ namespace TheWarriorScheduler
             //{
             //    file.WriteLine($"{s.gapRating}" + "!\n");
             //}
-            Console.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Overall: {s.Rating}");
+            Console.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Overall: {s.Rating}");
             //Console.WriteLine(String.Join(",", s.calculateGapRating()));
             //Console.WriteLine(String.Join(",", s.calculateDistanceRating()));
             Console.WriteLine("\n");
@@ -237,10 +237,26 @@ namespace TheWarriorScheduler
             return gapList;
         }
 
-        private List<Course> sortCoursesByTime (List<Course> courseList)
+        private List<Course> sortCoursesByTime(List<Course> courseList)
         {
             List<Course> newList = courseList.OrderBy(x => x.start_time.Hour).ToList();
             return newList;
+        }
+
+        private float calculateProfessorRating()
+        {
+            float sum = 0;
+            //int numStudents = 0;
+            foreach (Course c in this.Courses)
+            {
+                sum += (c.instructor_rating != 0) ? c.instructor_rating : 2.5f;
+                //if (c.instructor_rating != 0)
+                //{    
+                //sum += c.instructor_rating.rating * c.instructor_rating.num_students;
+                //numStudents += c.instructor_rating.num_students;
+                //}
+            }
+            return sum / this.Courses.Count;
         }
 
         public ScheduleStats ComputeStats()
@@ -271,11 +287,19 @@ namespace TheWarriorScheduler
             }
         }
 
-        public int Rating
+        public float professorRating
         {
             get
             {
-                return this.gapRating + this.lunchRating;
+                return this.calculateProfessorRating() * 20;
+            }
+        }
+
+        public double Rating
+        {
+            get
+            {
+                return Math.Round(this.gapRating + this.lunchRating + this.professorRating, 2);
             }
         }
 

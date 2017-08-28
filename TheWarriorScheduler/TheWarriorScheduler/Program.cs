@@ -35,8 +35,18 @@ namespace TheWarriorScheduler
             string googleApiKey = "AIzaSyCcO39He0FpIJctRGX8O5xEq5mZntYKZLk";
             string term = "1179";
             List<CourseList> responseList = new List<CourseList>();
+
             Console.WriteLine("How many courses are you taking this term?");
             int numCourses = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Are you OK with 8:30 classes? (Y/N)");
+            string earlyBird = Console.ReadLine().ToUpper();
+            bool earlyBirdFilter = (earlyBird == "Y") ? false : true;
+
+            Console.WriteLine("Are you OK with night classes? (Y/N)");
+            string night = Console.ReadLine().ToUpper();
+            bool nightFilter = (night == "Y") ? false : true;
+
             Console.WriteLine($"\nPlease enter the names of your {numCourses} courses:");
             Console.WriteLine("Each course should have the format of Subject ClassNumber. For example, \"CS 245\".");
             for (int i = 0; i < numCourses; ++i)
@@ -67,8 +77,7 @@ namespace TheWarriorScheduler
             }
 
             List<Schedule> resulter = new List<Schedule>();
-            resulter = ScheduleHelper.generateSchedules(responseList);
-            //resulter = sortSchedules(resulter);
+            resulter = ScheduleHelper.generateSchedules(responseList, earlyBirdFilter, nightFilter);
             for (int i = 0; i < resulter.Count; ++i)
             {
                 resulter[i].printSchedule();
@@ -89,12 +98,6 @@ namespace TheWarriorScheduler
                 product = await response.Content.ReadAsStringAsync();
             }
             return product;
-        }
-
-        public static List<Schedule> sortSchedules(List<Schedule> scheduleList)
-        {
-            List<Schedule> newList = scheduleList.OrderByDescending(x => x.Rating).ToList();
-            return newList;
         }
     }
 }

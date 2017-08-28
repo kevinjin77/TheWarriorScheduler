@@ -67,13 +67,40 @@ namespace TheWarriorScheduler
             return false;
         }
 
-        private static bool isScheduleValid(Schedule s1)
+        private static int dateToInt(DateTime date)
+        {
+            return date.Hour * 60 + date.Minute;
+        }
+
+        private static bool isScheduleValid(Schedule s1, bool earlyBirdFilter, bool nightFilter)
         {
             for (int i = 0; i < s1.Courses.Count - 1; ++i)
             {
                 for (int j = i + 1; j < s1.Courses.Count; ++j)
                 {
                     if(isConflict(s1.Courses[i], s1.Courses[j]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (earlyBirdFilter)
+            {
+                foreach (Course c in s1.Courses)
+                {
+                    if (dateToInt(c.start_time) <= 510)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (nightFilter)
+            {
+                foreach (Course c in s1.Courses)
+                {
+                    if (dateToInt(c.start_time) >= 1080)
                     {
                         return false;
                     }
@@ -88,7 +115,7 @@ namespace TheWarriorScheduler
             return newList;
         }
 
-        public static List<Schedule> generateSchedules(List<CourseList> responseList)
+        public static List<Schedule> generateSchedules(List<CourseList> responseList, bool earlyBirdFilter, bool nightFilter)
         {
             List<int> sizes = new List<int>();
             foreach (CourseList cList in responseList)
@@ -114,13 +141,12 @@ namespace TheWarriorScheduler
                     ++count;
                     //myList.Add(num);
                 }
-                if (isScheduleValid(mySchedule))
+                if (isScheduleValid(mySchedule, earlyBirdFilter, nightFilter))
                 {
-                    //mySchedule.printSchedule();
                     result.Add(mySchedule);
                 }
             }
-            result = sortSchedules(result);
+            //result = sortSchedules(result);
             return result;
         }
     }

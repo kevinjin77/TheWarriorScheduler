@@ -80,5 +80,12 @@ namespace TheWarriorScheduler
                 return this.classes[0].location.building + " " + this.classes[0].location.room;
             }
         }
+        public float instructor_rating
+        {
+            get
+            {
+                return ProfessorHelper.getRating(this.instructor);
+            }
+        }
     }
 }
