@@ -34,6 +34,30 @@ namespace TheWarriorScheduler
             Console.WriteLine("\n");
         }
 
+        private List<Course> processSchedule(string weekday)
+        {
+            List<Course> listCourse = new List<Course>();
+            foreach (Course c in this.Courses)
+            {
+                if (c.weekdays.Contains(weekday))
+                {
+                    listCourse.Add(c);
+                }
+            }
+            return listCourse;
+        }
+
+        private List<DateTime> toTimes(List<Course> courseList)
+        {
+            List<DateTime> timeList = new List<DateTime>();
+            foreach(Course c in courseList)
+            {
+                timeList.Add(c.start_time);
+                timeList.Add(c.end_time);
+            }
+            return timeList;
+        }
+
         private void getTimeGaps(List<DateTime> times, List<int> gapList)
         {
             if (times.Count <= 2)
@@ -52,45 +76,12 @@ namespace TheWarriorScheduler
 
         private int calculateGapRating()
         {
-            List<DateTime> mTimes = new List<DateTime>();
-            List<DateTime> tTimes = new List<DateTime>();
-            List<DateTime> wTimes = new List<DateTime>();
-            List<DateTime> thTimes = new List<DateTime>();
-            List<DateTime> fTimes = new List<DateTime>();
-            foreach (Course c in this.Courses)
-            {
-                if (c.weekdays.Contains("M"))
-                {
-                    mTimes.Add(c.start_time);
-                    mTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("T"))
-                {
-                    tTimes.Add(c.start_time);
-                    tTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("W"))
-                {
-                    wTimes.Add(c.start_time);
-                    wTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("Th"))
-                {
-                    thTimes.Add(c.start_time);
-                    thTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("F"))
-                {
-                    fTimes.Add(c.start_time);
-                    fTimes.Add(c.end_time);
-                }
-            }
             List<int> gapList = new List<int>();
-            getTimeGaps(mTimes, gapList);
-            getTimeGaps(tTimes, gapList);
-            getTimeGaps(wTimes, gapList);
-            getTimeGaps(thTimes, gapList);
-            getTimeGaps(fTimes, gapList);
+            getTimeGaps(this.mTimes, gapList);
+            getTimeGaps(this.tTimes, gapList);
+            getTimeGaps(this.wTimes, gapList);
+            getTimeGaps(this.thTimes, gapList);
+            getTimeGaps(this.fTimes, gapList);
 
             int count = 0;
             foreach (int num in gapList)
@@ -143,42 +134,8 @@ namespace TheWarriorScheduler
 
         private int calculateLunchRating()
         {
-            List<DateTime> mTimes = new List<DateTime>();
-            List<DateTime> tTimes = new List<DateTime>();
-            List<DateTime> wTimes = new List<DateTime>();
-            List<DateTime> thTimes = new List<DateTime>();
-            List<DateTime> fTimes = new List<DateTime>();
-            foreach (Course c in this.Courses)
-            {
-                if (c.weekdays.Contains("M"))
-                {
-                    mTimes.Add(c.start_time);
-                    mTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("T"))
-                {
-                    tTimes.Add(c.start_time);
-                    tTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("W"))
-                {
-                    wTimes.Add(c.start_time);
-                    wTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("Th"))
-                {
-                    thTimes.Add(c.start_time);
-                    thTimes.Add(c.end_time);
-                }
-                if (c.weekdays.Contains("F"))
-                {
-                    fTimes.Add(c.start_time);
-                    fTimes.Add(c.end_time);
-                }
-            }
-
-            return getLunchRating(mTimes) + getLunchRating(tTimes) + getLunchRating(wTimes)
-                + getLunchRating(thTimes) + getLunchRating(fTimes);
+            return getLunchRating(this.mTimes) + getLunchRating(this.tTimes) + getLunchRating(this.wTimes)
+                + getLunchRating(this.thTimes) + getLunchRating(this.fTimes);
         }
 
         private void getDistances(List<Course> courseList, List<int> gapList)
@@ -197,42 +154,12 @@ namespace TheWarriorScheduler
 
         private List<int> calculateDistanceRating()
         {
-            List<Course> mCourses = new List<Course>();
-            List<Course> tCourses = new List<Course>();
-            List<Course> wCourses = new List<Course>();
-            List<Course> thCourses = new List<Course>();
-            List<Course> fCourses = new List<Course>();
-
-            foreach(Course c in this.Courses)
-            {
-                if (c.weekdays.Contains("M"))
-                {
-                    mCourses.Add(c);
-                }
-                if (c.weekdays.Contains("T"))
-                {
-                    tCourses.Add(c);
-                }
-                if (c.weekdays.Contains("W"))
-                {
-                    wCourses.Add(c);
-                }
-                if (c.weekdays.Contains("Th"))
-                {
-                    thCourses.Add(c);
-                }
-                if (c.weekdays.Contains("F"))
-                {
-                    fCourses.Add(c);
-                }
-            }
-
             List<int> gapList = new List<int>();
-            getDistances(sortCoursesByTime(mCourses), gapList);
-            getDistances(sortCoursesByTime(tCourses), gapList);
-            getDistances(sortCoursesByTime(wCourses), gapList);
-            getDistances(sortCoursesByTime(thCourses), gapList);
-            getDistances(sortCoursesByTime(fCourses), gapList);
+            getDistances(sortCoursesByTime(this.mCourses), gapList);
+            getDistances(sortCoursesByTime(this.tCourses), gapList);
+            getDistances(sortCoursesByTime(this.wCourses), gapList);
+            getDistances(sortCoursesByTime(this.thCourses), gapList);
+            getDistances(sortCoursesByTime(this.fCourses), gapList);
 
             return gapList;
         }
@@ -266,42 +193,39 @@ namespace TheWarriorScheduler
             return stats;
         }
 
-        /*private int scaleRating()
-        {
+        private List<Course> mCourses
+        { get { return processSchedule("M"); } }
+        private List<Course> tCourses
+        { get { return processSchedule("T"); } }
+        private List<Course> wCourses
+        { get { return processSchedule("W"); } }
+        private List<Course> thCourses
+        { get { return processSchedule("Th"); } }
+        private List<Course> fCourses
+        { get { return processSchedule("F"); } }
 
-        }*/
+        private List<DateTime> mTimes
+        { get { return toTimes(this.mCourses); } }
+        private List<DateTime> tTimes
+        { get { return toTimes(this.tCourses); } }
+        private List<DateTime> wTimes
+        { get { return toTimes(this.wCourses); } }
+        private List<DateTime> thTimes
+        { get { return toTimes(this.thCourses); } }
+        private List<DateTime> fTimes
+        { get { return toTimes(this.fCourses); } }
 
         public int gapRating
-        {
-            get
-            {
-                return this.calculateGapRating();
-            }
-        }
+        { get { return this.calculateGapRating(); } }
 
         public int lunchRating
-        {
-            get
-            {
-                return this.calculateLunchRating();
-            }
-        }
+        { get { return this.calculateLunchRating(); } }
 
         public float professorRating
-        {
-            get
-            {
-                return this.calculateProfessorRating() * 20;
-            }
-        }
+        { get { return this.calculateProfessorRating() * 20; } }
 
         public double Rating
-        {
-            get
-            {
-                return Math.Round(this.gapRating + this.lunchRating + this.professorRating, 2);
-            }
-        }
+        { get { return Math.Round(this.gapRating + this.lunchRating + this.professorRating, 2); } }
 
         public List<Course> Courses = new List<Course>();
     }

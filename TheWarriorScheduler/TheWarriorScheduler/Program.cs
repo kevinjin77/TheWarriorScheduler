@@ -32,7 +32,6 @@ namespace TheWarriorScheduler
         {
             int test = LocationHelper.distanceInSeconds("AL", "MC");
             string uwApiKey = "a0fa5a0445627c840d18a3cf30d89995";
-            string googleApiKey = "AIzaSyCcO39He0FpIJctRGX8O5xEq5mZntYKZLk";
             string term = "1179";
             List<CourseList> responseList = new List<CourseList>();
 

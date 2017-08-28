@@ -24,7 +24,6 @@ namespace TheWarriorScheduler
 
         public static float getRating(string name)
         {
-            //ProfRating myRating = new ProfRating();
             if (name == "")
             {
                 return 0;
@@ -53,17 +52,8 @@ namespace TheWarriorScheduler
                     }
                     return 0;
                 }
-                //myRating.rating = float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
-                //myRating.num_students = responseJSON.professors[0].tNumRatings;
-                //return myRating;
                 return float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
             }          
         }  
     }
-
-    //public class ProfRating
-    //{
-    //    public float rating = 0;
-    //    public int num_students = 0;
-    //}
 }

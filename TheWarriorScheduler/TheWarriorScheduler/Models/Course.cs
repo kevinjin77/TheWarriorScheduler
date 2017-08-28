@@ -32,60 +32,31 @@ namespace TheWarriorScheduler
         public string last_updated { get; set; }
 
         public string type
-        {
-            get { return section.Substring(0, 3); }
-        }
+        { get { return section.Substring(0, 3); } }
+
         public bool is_full
-        {
-            get { return enrollment_capacity >= enrollment_total ? true : false; }
-        }
+        { get { return enrollment_capacity >= enrollment_total ? true : false; } }
+
         public List<string> weekdays
-        {
-            get {
-                return ScheduleHelper.processDate(this.classes[0].date.weekdays);
-            }
-        }
+        { get { return ScheduleHelper.processDate(this.classes[0].date.weekdays); } }
+
         public DateTime start_time
-        {
-            get
-            {
-                return DateTime.ParseExact(this.classes[0].date.start_time, "HH:mm", null); 
-            }
-        }
+        { get { return DateTime.ParseExact(this.classes[0].date.start_time, "HH:mm", null); } }
+
         public DateTime end_time
-        {
-            get
-            {
-                return DateTime.ParseExact(this.classes[0].date.end_time, "HH:mm", null);
-            }
-        }
+        { get { return DateTime.ParseExact(this.classes[0].date.end_time, "HH:mm", null); } }
+
         public string instructor
-        {
-            get
-            {
-                return this.classes[0].instructors.Count == 0 ? "" : this.classes[0].instructors[0].ToString();
-            }
-        }
+        { get { return this.classes[0].instructors.Count == 0 ? "" : this.classes[0].instructors[0].ToString(); } }
+
         public string building
-        {
-            get
-            {
-                return this.classes[0].location.building;
-            }
-        }
+        { get { return this.classes[0].location.building; } }
+
         public string classroom
-        {
-            get
-            {
-                return this.classes[0].location.building + " " + this.classes[0].location.room;
-            }
-        }
+        { get { return this.classes[0].location.building + " " + this.classes[0].location.room; } }
+
         public float instructor_rating
-        {
-            get
-            {
-                return ProfessorHelper.getRating(this.instructor);
-            }
-        }
+        { get { return ProfessorHelper.getRating(this.instructor); } }
+
     }
 }
