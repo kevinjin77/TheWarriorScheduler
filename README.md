@@ -5,12 +5,13 @@ An application to find the best possible schedules for Waterloo students. (WIP)
 
 ## TODO:
 #### Add Rating System for generated schedule:
-   - Professor Rating (Need a way to get ratings off of RateMyProf)
+   - ~~Professor Rating~~ **✓**
    - *Distance Rating (Based on distance between buildings using API to get lat/longitude and then using Google Maps)*
       - Works, but is too slow.
    - ~~Gap Rating (Based on number of small gaps)~~ **✓**
    - ~~Lunch Rating (Based on time allocated for lunch)~~ **✓**
-   - Early Bird/Night Owl (No 8:30 Classes, if possible)
+   - ~~Early Bird/Night Owl Filter (No 8:30/Night Classes, if possible)~~ **✓**
+   - Early Bird/Night Owl Rating
    - Proximity Rating (Least number of changes from current schedule, if given one)
    - Scale Individual Ratings out of 100, scale overall ratings based on importance (Professor Rating > Gap Rating)
    
