@@ -146,7 +146,7 @@ namespace TheWarriorScheduler
                     result.Add(mySchedule);
                 }
             }
-            //result = sortSchedules(result);
+            result = sortSchedules(result);
             return result;
         }
     }

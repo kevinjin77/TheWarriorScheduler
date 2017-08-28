@@ -24,10 +24,23 @@ namespace TheWarriorScheduler
 
         public static float getRating(string name)
         {
+            Rating myRating = new Rating();
             if (name == "")
-            {
+            { 
+                myRating.professor = name;
+                myRating.rating = 0;
+                ratingsCache.Add(myRating);
                 return 0;
             }
+
+            foreach (Rating r in ratingsCache)
+            {
+                if (r.professor == name)
+                {
+                    return r.rating;
+                }
+            }
+
             string[] parsedName = parseName(name);
             using (WebClient wc = new WebClient())
             {
@@ -41,19 +54,39 @@ namespace TheWarriorScheduler
                     responseJSON = new JavaScriptSerializer().Deserialize<ProfessorResponse>(response);
                     if (responseJSON.professors.Count == 0)
                     {
+                        myRating.professor = name;
+                        myRating.rating = 0;
+                        ratingsCache.Add(myRating);
                         return 0;
                     }
                     foreach (Professor p in responseJSON.professors)
                     {
                         if (p.tFname.StartsWith(parsedName[1][0].ToString()))
                         {
-                            return float.Parse(p.overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                            myRating.professor = name;
+                            myRating.rating = float.Parse(p.overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                            ratingsCache.Add(myRating);
+                            return myRating.rating;
                         } 
                     }
+                    myRating.professor = name;
+                    myRating.rating = 0;
+                    ratingsCache.Add(myRating);
                     return 0;
                 }
-                return float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                myRating.professor = name;
+                myRating.rating = float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                ratingsCache.Add(myRating);
+                return myRating.rating;
             }          
-        }  
+        }
+        
+        public class Rating
+        {
+            public string professor;
+            public float rating;
+        }
+
+        public static List<Rating> ratingsCache = new List<Rating>();
     }
 }
