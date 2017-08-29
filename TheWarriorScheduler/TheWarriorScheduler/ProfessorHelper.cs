@@ -75,7 +75,14 @@ namespace TheWarriorScheduler
                     return 0;
                 }
                 myRating.professor = name;
-                myRating.rating = float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                try
+                {
+                    myRating.rating = float.Parse(responseJSON.professors[0].overall_rating, CultureInfo.InvariantCulture.NumberFormat);
+                } catch (Exception e)
+                {
+                    myRating.rating = 0;
+                }
+                
                 ratingsCache.Add(myRating);
                 return myRating.rating;
             }          

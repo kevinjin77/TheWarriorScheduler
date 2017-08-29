@@ -20,6 +20,7 @@ using System.Web.Script.Serialization;
 //   - Include TUT, TST in Schedule
 //   - Accomodate ENG Classes (One Lecture, Multiple Classes)
 //   - Show Open Classes Only (Or Red Dot if class if full, eventually take reserves into account"
+//   - Handle Online Courses (No Start/End Time or Weekdays)
 
 
 namespace TheWarriorScheduler
@@ -46,6 +47,8 @@ namespace TheWarriorScheduler
             string night = Console.ReadLine().ToUpper();
             bool nightFilter = (night == "Y") ? false : true;
 
+            List<string> courseNames = new List<string>();
+
             Console.WriteLine($"\nPlease enter the names of your {numCourses} courses:");
             Console.WriteLine("Each course should have the format of Subject ClassNumber. For example, \"CS 245\".");
             for (int i = 0; i < numCourses; ++i)
@@ -59,11 +62,12 @@ namespace TheWarriorScheduler
                     var dataJSON = new JavaScriptSerializer().Deserialize<CourseList>(data);
                     if (dataJSON.data.Count == 0)
                     {
-                        Console.WriteLine($"\n{arguments[0]} {arguments[1]} does not exist/is not being offered this term! Please enter a valid course:");
+                        Console.WriteLine($"\n{arguments[0].ToUpper()} {arguments[1]} does not exist/is not being offered this term! Please enter a valid course:");
                         i--;
                     }
                     else
                     {
+                        courseNames.Add($"{arguments[0].ToUpper()} {arguments[1]}");
                         responseList.Add(dataJSON);
                     }
                 }
@@ -75,8 +79,24 @@ namespace TheWarriorScheduler
                 }
             }
 
+            Console.WriteLine("\nDo you already have a schedule? (Y/N)");
+            string alreadySchedule = Console.ReadLine().ToUpper();
+
+            List<string> lectureList = new List<string>();
+
+            if (alreadySchedule == "Y")
+            {
+                Console.WriteLine("Enter the lecture number (ex. \"003\") for each of your courses.\n");
+                
+                for (int i = 0; i < numCourses; ++i)
+                {
+                    Console.Write($"{courseNames[i]}: ");
+                    lectureList.Add("LEC " + Console.ReadLine());
+                }
+            }
+
             List<Schedule> resulter = new List<Schedule>();
-            resulter = ScheduleHelper.generateSchedules(responseList, earlyBirdFilter, nightFilter);
+            resulter = ScheduleHelper.generateSchedules(responseList, earlyBirdFilter, nightFilter, lectureList);
             for (int i = 0; i < resulter.Count; ++i)
             {
                 resulter[i].printSchedule();

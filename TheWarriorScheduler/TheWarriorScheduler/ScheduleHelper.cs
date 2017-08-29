@@ -115,7 +115,7 @@ namespace TheWarriorScheduler
             return newList;
         }
 
-        public static List<Schedule> generateSchedules(List<CourseList> responseList, bool earlyBirdFilter, bool nightFilter)
+        public static List<Schedule> generateSchedules(List<CourseList> responseList, bool earlyBirdFilter, bool nightFilter, List<string> lectureList)
         {
             List<int> sizes = new List<int>();
             foreach (CourseList cList in responseList)
@@ -125,21 +125,25 @@ namespace TheWarriorScheduler
             int[][] initArray = new int[sizes.Count][];
             for (int i = 0; i < sizes.Count; ++i)
             {
-                initArray[i] = (Enumerable.Range(0, sizes[i] - 1).ToArray());
+                if (sizes.Count - 1 == 0)
+                {
+                    initArray[i] = new int[] { 0 };
+                } else
+                {
+                    initArray[i] = (Enumerable.Range(0, sizes[i] - 1).ToArray());
+                }
             }
 
             var cross = new CartesianProduct<int>(initArray);
             List<Schedule> result = new List<Schedule>();
             foreach (var item in cross.Get())
             {
-                Schedule mySchedule = new Schedule();
-                //List<int> myList = new List<int>();
+                Schedule mySchedule = new Schedule(lectureList);
                 int count = 0;
                 foreach (int num in item)
                 {
                     mySchedule.Courses.Add(responseList[count].data[num]);
                     ++count;
-                    //myList.Add(num);
                 }
                 if (isScheduleValid(mySchedule, earlyBirdFilter, nightFilter))
                 {

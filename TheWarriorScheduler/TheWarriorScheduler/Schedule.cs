@@ -8,9 +8,13 @@ namespace TheWarriorScheduler
 {
     public class Schedule
     {
+        public Schedule(List<string> lectureList)
+        {
+            LectureList = lectureList;
+        }
+
         public void printSchedule()
         {
-            Schedule s = new Schedule();
             foreach(Course c in Courses)
             {
                 using (System.IO.StreamWriter file =
@@ -19,16 +23,17 @@ namespace TheWarriorScheduler
                     file.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
                     + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 }
-                Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
+                Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: { c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
                     + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom} {c.instructor_rating}");
-                s.Courses.Add(c);
+                //Courses.Add(c);
             }
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(@"test.txt", true))
             {
-                file.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Distance: {s.distanceRating}, Overall: {s.Rating}");
+                file.WriteLine($"Gap: {gapRating}, Lunch: {lunchRating}, Professor: {professorRating}, Distance: {distanceRating}, Proximity: {proximityRating}, Overall: {Rating}");
+                file.WriteLine("\n");
             }
-            Console.WriteLine($"Gap: {s.gapRating}, Lunch: {s.lunchRating}, Professor: {s.professorRating}, Distance: {s.distanceRating}, Overall: {s.Rating}");
+            Console.WriteLine($"Gap: {gapRating}, Lunch: {lunchRating}, Professor: {professorRating}, Distance: {distanceRating}, Proximity: {proximityRating}, Overall: {Rating}");
             //Console.WriteLine(String.Join(",", s.calculateGapRating()));
             //Console.WriteLine(String.Join(",", s.calculateDistanceRating()));
             Console.WriteLine("\n");
@@ -37,7 +42,7 @@ namespace TheWarriorScheduler
         private List<Course> processSchedule(string weekday)
         {
             List<Course> listCourse = new List<Course>();
-            foreach (Course c in this.Courses)
+            foreach (Course c in Courses)
             {
                 if (c.weekdays.Contains(weekday))
                 {
@@ -77,11 +82,11 @@ namespace TheWarriorScheduler
         private int calculateGapRating()
         {
             List<int> gapList = new List<int>();
-            getTimeGaps(this.mTimes, gapList);
-            getTimeGaps(this.tTimes, gapList);
-            getTimeGaps(this.wTimes, gapList);
-            getTimeGaps(this.thTimes, gapList);
-            getTimeGaps(this.fTimes, gapList);
+            getTimeGaps(mTimes, gapList);
+            getTimeGaps(tTimes, gapList);
+            getTimeGaps(wTimes, gapList);
+            getTimeGaps(thTimes, gapList);
+            getTimeGaps(fTimes, gapList);
 
             int count = 0;
             foreach (int num in gapList)
@@ -134,8 +139,8 @@ namespace TheWarriorScheduler
 
         private int calculateLunchRating()
         {
-            return getLunchRating(this.mTimes) + getLunchRating(this.tTimes) + getLunchRating(this.wTimes)
-                + getLunchRating(this.thTimes) + getLunchRating(this.fTimes);
+            return getLunchRating(mTimes) + getLunchRating(tTimes) + getLunchRating(wTimes)
+                + getLunchRating(thTimes) + getLunchRating(fTimes);
         }
 
         private void getDistances(List<Course> courseList, List<int> gapList)
@@ -165,21 +170,22 @@ namespace TheWarriorScheduler
                         int seconds = LocationHelper.distanceInSeconds(courseList[i].building, courseList[i + 1].building);
                         if (seconds >= 200)
                         {
-                            result -= (200 - seconds);
+                            result -= (seconds - 200);
                         }
                     }
                 }
             }
-            return result / 120;
+            return result / 10;
         }
 
         private double calculateDistanceRating()
         {
-            return calculateDistanceRatingByCourseList(this.mCourses)
-                + calculateDistanceRatingByCourseList(this.tCourses)
-                + calculateDistanceRatingByCourseList(this.wCourses)
-                + calculateDistanceRatingByCourseList(this.thCourses)
-                + calculateDistanceRatingByCourseList(this.fCourses);
+            double result = calculateDistanceRatingByCourseList(mCourses)
+                + calculateDistanceRatingByCourseList(tCourses)
+                + calculateDistanceRatingByCourseList(wCourses)
+                + calculateDistanceRatingByCourseList(thCourses)
+                + calculateDistanceRatingByCourseList(fCourses);
+            return result;
         }
 
         private List<Course> sortCoursesByTime(List<Course> courseList)
@@ -192,7 +198,7 @@ namespace TheWarriorScheduler
         {
             float sum = 0;
             //int numStudents = 0;
-            foreach (Course c in this.Courses)
+            foreach (Course c in Courses)
             {
                 sum += (c.instructor_rating != 0) ? c.instructor_rating : 2.5f;
                 //if (c.instructor_rating != 0)
@@ -201,7 +207,24 @@ namespace TheWarriorScheduler
                 //numStudents += c.instructor_rating.num_students;
                 //}
             }
-            return sum / this.Courses.Count;
+            return sum / Courses.Count;
+        }
+
+        private int calculateProximityRating(List<string> lectureList)
+        {
+            int count = 0;
+            if (lectureList == null)
+            {
+                return count;
+            }
+            for (int i = 0; i < lectureList.Count; ++i)
+            {
+                if (Courses[i].section == lectureList[i])
+                {
+                    ++count;
+                }
+            }
+            return count;
         }
 
         public ScheduleStats ComputeStats()
@@ -211,6 +234,7 @@ namespace TheWarriorScheduler
             return stats;
         }
 
+        public List<string> LectureList { get; set; }
         private List<Course> mCourses
         { get { return sortCoursesByTime(processSchedule("M")); } }
         private List<Course> tCourses
@@ -223,30 +247,35 @@ namespace TheWarriorScheduler
         { get { return sortCoursesByTime(processSchedule("F")); } }
 
         private List<DateTime> mTimes
-        { get { return toTimes(this.mCourses); } }
+        { get { return toTimes(mCourses); } }
         private List<DateTime> tTimes
-        { get { return toTimes(this.tCourses); } }
+        { get { return toTimes(tCourses); } }
         private List<DateTime> wTimes
-        { get { return toTimes(this.wCourses); } }
+        { get { return toTimes(wCourses); } }
         private List<DateTime> thTimes
-        { get { return toTimes(this.thCourses); } }
+        { get { return toTimes(thCourses); } }
         private List<DateTime> fTimes
-        { get { return toTimes(this.fCourses); } }
+        { get { return toTimes(fCourses); } }
 
         public int gapRating
-        { get { return this.calculateGapRating(); } }
+        { get { return calculateGapRating(); } }
 
         public int lunchRating
-        { get { return this.calculateLunchRating(); } }
+        { get { return calculateLunchRating(); } }
 
         public float professorRating
-        { get { return this.calculateProfessorRating() * 20; } }
+        { get { return calculateProfessorRating() * 20; } }
 
         public double distanceRating
-        { get { return this.calculateDistanceRating(); } }
+        { get { return calculateDistanceRating(); } }
+
+        public double proximityRating
+        { get { return calculateProximityRating(LectureList); } }
 
         public double Rating
-        { get { return Math.Round(this.gapRating + this.lunchRating + this.professorRating + this.distanceRating, 2); } }
+        { get
+            { return Math.Round(gapRating + lunchRating + professorRating + distanceRating + proximityRating, 2); }
+        }
 
         public List<Course> Courses = new List<Course>();
     }
