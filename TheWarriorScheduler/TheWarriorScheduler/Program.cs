@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -97,6 +98,7 @@ namespace TheWarriorScheduler
 
             List<Schedule> resulter = new List<Schedule>();
             resulter = ScheduleHelper.generateSchedules(responseList, earlyBirdFilter, nightFilter, lectureList);
+            File.WriteAllText(@"test.txt", String.Empty);
             for (int i = 0; i < resulter.Count; ++i)
             {
                 resulter[i].printSchedule();

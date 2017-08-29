@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace TheWarriorScheduler
 
         public void printSchedule()
         {
-            foreach(Course c in Courses)
+            foreach (Course c in Courses)
             {
                 using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"test.txt", true))
