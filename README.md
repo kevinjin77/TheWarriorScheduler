@@ -21,3 +21,6 @@ An application to find the best possible schedules for Waterloo students. (WIP)
    - Accomodate ENG Classes (One Lecture, Multiple Classes)
    - Show Open Classes Only (Or Blue Square if class if full, eventually take reserves into account)
    - Accomodate Online Classes (No Start Time, End Time, Weekdays)
+
+#### Known Defects:
+   - Handle case where building is not found. (ex. SJ1)
