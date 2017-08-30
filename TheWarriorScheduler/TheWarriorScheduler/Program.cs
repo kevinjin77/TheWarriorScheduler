@@ -19,6 +19,7 @@ using System.Web.Script.Serialization;
 //   - Scale Individual Ratings out of 100, scale overall ratings based on importance (Professor Rating > Gap Rating)
 
 //   - Include TUT, TST in Schedule
+//   - Determine Term Number automatically. (Spring 2017 is 1171, Summer 2017 is 1175, Winter 2017 is 1179)
 //   - Accomodate ENG Classes (One Lecture, Multiple Classes)
 //   - Show Open Classes Only (Or Red Dot if class if full, eventually take reserves into account"
 //   - Handle Online Courses (No Start/End Time or Weekdays)
@@ -32,9 +33,10 @@ namespace TheWarriorScheduler
 
         static void Main(string[] args)
         {
-            int test = LocationHelper.distanceInSeconds("AL", "MC");
             string uwApiKey = "a0fa5a0445627c840d18a3cf30d89995";
-            string term = "1179";
+
+            Console.WriteLine("What term do you want schedules for? (ex. \"1179\", which corresponds to Fall 2017)");
+            string term = Console.ReadLine();
             List<CourseList> responseList = new List<CourseList>();
 
             Console.WriteLine("How many courses are you taking this term?");

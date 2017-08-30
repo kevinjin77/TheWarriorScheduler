@@ -169,7 +169,7 @@ namespace TheWarriorScheduler
             int[][] initArray = new int[sizes.Count][];
             for (int i = 0; i < sizes.Count; ++i)
             {
-                if (sizes.Count - 1 == 0)
+                if (sizes[i] - 1 == 0)
                 {
                     initArray[i] = new int[] { 0 };
                 } else

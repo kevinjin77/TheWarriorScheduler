@@ -30,20 +30,40 @@ namespace TheWarriorScheduler
                 }
             }
 
-            StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/buildings/");
-            requestString.Append($"{building}.json?key={uwApiKey}");
-            var response = GetContentAsync(requestString.ToString()).Result;
-            var responseJSON = new JavaScriptSerializer().Deserialize<Building>(response);
-            Coordinates coords = new Coordinates();
-            coords.latitude = responseJSON.data.latitude;
-            coords.longitude = responseJSON.data.longitude;
+            string oldBuilding = building;
 
-            BuildingObj myBuilding = new BuildingObj();
-            myBuilding.name = building;
-            myBuilding.coords = coords;
-            buildingsCache.Add(myBuilding);
+            while (true)
+            {
+                try
+                {
+                    StringBuilder requestString = new StringBuilder("https://api.uwaterloo.ca/v2/buildings/");
+                    requestString.Append($"{building}.json?key={uwApiKey}");
+                    var response = GetContentAsync(requestString.ToString()).Result;
+                    var responseJSON = new JavaScriptSerializer().Deserialize<Building>(response);
+                    Coordinates coords = new Coordinates();
+                    coords.latitude = responseJSON.data.latitude;
+                    coords.longitude = responseJSON.data.longitude;
 
-            return coords;
+                    BuildingObj myBuilding = new BuildingObj();
+                    myBuilding.name = oldBuilding;
+                    myBuilding.coords = coords;
+                    buildingsCache.Add(myBuilding);
+
+                    return coords;
+                }
+                catch (InvalidOperationException e)
+                {
+                    if (building.Contains("SJ"))
+                    {
+                        oldBuilding = building;
+                        building = "STJ";       // Handle St. Jerome's
+                    }
+                    else
+                    {
+                        building = "MC";        // Default to MC
+                    }
+                }
+            }     
         }
 
         public static int distanceInSeconds(string building1, string building2) {

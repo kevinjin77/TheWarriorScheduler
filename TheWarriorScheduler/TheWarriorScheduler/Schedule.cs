@@ -176,7 +176,7 @@ namespace TheWarriorScheduler
                     }
                 }
             }
-            return result / 10;
+            return result / 60;
         }
 
         private double calculateDistanceRating()
