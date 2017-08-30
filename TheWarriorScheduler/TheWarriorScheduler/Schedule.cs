@@ -22,10 +22,10 @@ namespace TheWarriorScheduler
                 new System.IO.StreamWriter(@"test.txt", true))
                 {
                     file.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
-                    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom} {c.instructor_rating}");
+                    + (c.classes[0].instructors.Count == 0 ? "???" : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 }
                 Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: { c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
-                    + (c.classes[0].instructors.Count == 0 ? " " : c.instructor) + $" {c.classroom} {c.instructor_rating}");
+                    + (c.classes[0].instructors.Count == 0 ? "???" : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 //Courses.Add(c);
             }
             using (System.IO.StreamWriter file =

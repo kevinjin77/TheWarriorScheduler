@@ -12,6 +12,10 @@ namespace TheWarriorScheduler
         {
             int index = 0;
             List<string> dayList = new List<string>();
+            if (weekdays == null)
+            {
+                return dayList;
+            }
             if (index < weekdays.Length && weekdays[index] == 'M')
             {
                 dayList.Add("M");
@@ -117,9 +121,49 @@ namespace TheWarriorScheduler
 
         public static List<Schedule> generateSchedules(List<CourseList> responseList, bool earlyBirdFilter, bool nightFilter, List<string> lectureList)
         {
+            int numLec, numTut, numLab, numTst, lecIndex, tutIndex, labIndex, tstIndex;
+            numLec =  numTut = numLab =  numTst = 0;
             List<int> sizes = new List<int>();
             foreach (CourseList cList in responseList)
             {
+                foreach (Course c in cList.data)
+                {
+                    if (c.type == "LEC")
+                    {
+                        ++numLec;
+                    } else if (c.type == "TUT")
+                    {
+                        ++numTut;
+                    }
+                    else if (c.type == "LAB")
+                    {
+                        ++numLab;
+                    }
+                    else if (c.type == "TST")
+                    {
+                        ++numTst;
+                    }
+                }
+                lecIndex = 0;
+                tutIndex = numLec;
+                labIndex = tutIndex + numTut;
+                tstIndex = labIndex + numLab;
+                /*if (numLec > 0)
+                {
+                    sizes.Add(numLec);
+                }
+                if (numTut > 0)
+                {
+                    sizes.Add(numTut);
+                }
+                if (numLab > 0)
+                {
+                    sizes.Add(numLab);
+                }
+                if (numTst > 0)
+                {
+                    sizes.Add(numTst);
+                }*/
                 sizes.Add(cList.data.Count);
             }
             int[][] initArray = new int[sizes.Count][];
