@@ -24,8 +24,8 @@ namespace TheWarriorScheduler
                     file.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: {c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
                     + (c.classes[0].instructors.Count == 0 ? "???" : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 }
-                Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: { c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
-                    + (c.classes[0].instructors.Count == 0 ? "???" : c.instructor) + $" {c.classroom} {c.instructor_rating}");
+                //Console.WriteLine($"{c.subject} {c.catalog_number}, {c.section}: { c.classes[0].date.weekdays} {c.classes[0].date.start_time} - {c.classes[0].date.end_time} "
+                //    + (c.classes[0].instructors.Count == 0 ? "???" : c.instructor) + $" {c.classroom} {c.instructor_rating}");
                 //Courses.Add(c);
             }
             using (System.IO.StreamWriter file =
@@ -34,10 +34,10 @@ namespace TheWarriorScheduler
                 file.WriteLine($"Gap: {gapRating}, Lunch: {lunchRating}, Professor: {professorRating}, Distance: {distanceRating}, Proximity: {proximityRating}, Overall: {Rating}");
                 file.WriteLine("\n");
             }
-            Console.WriteLine($"Gap: {gapRating}, Lunch: {lunchRating}, Professor: {professorRating}, Distance: {distanceRating}, Proximity: {proximityRating}, Overall: {Rating}");
+            //Console.WriteLine($"Gap: {gapRating}, Lunch: {lunchRating}, Professor: {professorRating}, Distance: {distanceRating}, Proximity: {proximityRating}, Overall: {Rating}");
             //Console.WriteLine(String.Join(",", s.calculateGapRating()));
             //Console.WriteLine(String.Join(",", s.calculateDistanceRating()));
-            Console.WriteLine("\n");
+            //Console.WriteLine("\n");
         }
 
         private List<Course> processSchedule(string weekday)
