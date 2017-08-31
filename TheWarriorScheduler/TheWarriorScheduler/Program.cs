@@ -21,7 +21,7 @@ using System.Web.Script.Serialization;
 //   - Include TUT, TST in Schedule
 //   - Determine Term Number automatically. (Spring 2017 is 1171, Summer 2017 is 1175, Winter 2017 is 1179)
 //   - Accomodate ENG Classes (One Lecture, Multiple Classes)
-//   - Show Open Classes Only (Or Red Dot if class if full, eventually take reserves into account"
+//   - Show Open Classes Only (Or Red Dot if class if full, eventually take reserves into account)
 //   - Handle Online Courses (No Start/End Time or Weekdays)
 
 
@@ -105,7 +105,7 @@ namespace TheWarriorScheduler
             {
                 resulter[i].printSchedule();
             }
-            ScheduleStats stats = resulter[0].ComputeStats();
+            //ScheduleStats stats = resulter[0].ComputeStats();
             Console.ReadLine();
         }
 

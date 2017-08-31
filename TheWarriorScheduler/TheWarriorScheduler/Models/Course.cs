@@ -37,6 +37,41 @@ namespace TheWarriorScheduler
         public bool is_full
         { get { return enrollment_capacity >= enrollment_total ? true : false; } }
 
+        /*private List<string> _weekdays = new List<string>();
+
+        public List<string> weekdays
+        { get { return (_weekdays.Count != 0) ? _weekdays : _weekdays = ScheduleHelper.processDate(this.classes[0].date.weekdays); } }
+
+        private DateTime _start_time = DateTime.MinValue;
+
+        public DateTime start_time
+        { get { return _start_time == DateTime.MinValue ? _start_time : _start_time = DateTime.ParseExact(this.classes[0].date.start_time, "HH:mm", null); } }
+
+        private DateTime _end_time = DateTime.MinValue;
+
+        public DateTime end_time
+        { get { return _end_time == DateTime.MinValue ? _end_time : _end_time = DateTime.ParseExact(this.classes[0].date.end_time, "HH:mm", null); } }
+
+        private string _instructor = "q";
+
+        public string instructor
+        { get { return _instructor == "q" ? _instructor : _instructor = this.classes[0].instructors.Count == 0 ? "" : this.classes[0].instructors[0].ToString(); } }
+
+        private string _building = "q";
+
+        public string building
+        { get { return _building != "q" ? _building : _building = this.classes[0].location.building; } }
+
+        private string _classroom = "q";
+
+        public string classroom
+        { get { return _classroom != "q" ? _classroom : _classroom = this.classes[0].location.building + " " + this.classes[0].location.room; } }
+
+        private float _instructor_rating = -1;
+
+        public float instructor_rating
+        { get { return _instructor_rating != -1 ? _instructor_rating : _instructor_rating = ProfessorHelper.getRating(this.instructor); } }*/
+
         public List<string> weekdays
         { get { return ScheduleHelper.processDate(this.classes[0].date.weekdays); } }
 
@@ -57,6 +92,5 @@ namespace TheWarriorScheduler
 
         public float instructor_rating
         { get { return ProfessorHelper.getRating(this.instructor); } }
-
     }
 }

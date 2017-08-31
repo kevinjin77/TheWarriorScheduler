@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Building.cs" />
-    <Compile Include="CartesianProduct.cs" />
     <Compile Include="LocationHelper.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Course.cs" />

@@ -105,7 +105,7 @@ namespace TheWarriorScheduler
             return date.Hour * 60 + date.Minute;
         }
 
-        private int getLunchRating(List<DateTime> times)
+        private double getLunchRating(List<DateTime> times)
         {
             //times = times.OrderBy(x => x.TimeOfDay).ToList();
 
@@ -138,7 +138,7 @@ namespace TheWarriorScheduler
             return max;
         }
 
-        private int calculateLunchRating()
+        private double calculateLunchRating()
         {
             return getLunchRating(mTimes) + getLunchRating(tTimes) + getLunchRating(wTimes)
                 + getLunchRating(thTimes) + getLunchRating(fTimes);
@@ -236,6 +236,66 @@ namespace TheWarriorScheduler
         }
 
         public List<string> LectureList { get; set; }
+
+        /*private List<Course> _mCourses;
+        private List<Course> mCourses
+        { get { return _mCourses != null ? _mCourses : _mCourses = sortCoursesByTime(processSchedule("M")); } }
+        private List<Course> _tCourses;
+        private List<Course> tCourses
+        { get { return _tCourses != null ? _tCourses : _tCourses = sortCoursesByTime(processSchedule("T")); } }
+        private List<Course> _wCourses;
+        private List<Course> wCourses
+        { get { return _wCourses != null ? _wCourses : _wCourses = sortCoursesByTime(processSchedule("W")); } }
+        private List<Course> _thCourses;
+        private List<Course> thCourses
+        { get { return _thCourses != null ? _thCourses : _thCourses = sortCoursesByTime(processSchedule("Th")); } }
+        private List<Course> _fCourses;
+        private List<Course> fCourses
+        { get { return _fCourses != null ? _fCourses : _fCourses = sortCoursesByTime(processSchedule("F")); } }
+
+        private List<DateTime> _mTimes;
+        private List<DateTime> mTimes
+        { get { return _mTimes != null ? _mTimes : _mTimes = toTimes(mCourses); } }
+        private List<DateTime> _tTimes;
+        private List<DateTime> tTimes
+        { get { return _tTimes != null ? _tTimes : _tTimes = toTimes(tCourses); } }
+        private List<DateTime> _wTimes;
+        private List<DateTime> wTimes
+        { get { return _wTimes != null ? _wTimes : _wTimes = toTimes(wCourses); } }
+        private List<DateTime> _thTimes;
+        private List<DateTime> thTimes
+        { get { return _thTimes != null ? _thTimes : _thTimes = toTimes(thCourses); } }
+        private List<DateTime> _fTimes;
+        private List<DateTime> fTimes
+        { get { return _fTimes != null ? _fTimes : _fTimes = toTimes(fCourses); } }
+
+        private int _gapRating = -1;
+        public int gapRating
+        { get { return _gapRating != -1 ? _gapRating : _gapRating = calculateGapRating(); } }
+
+        private int _lunchRating = -1;
+        public int lunchRating
+        { get { return _lunchRating != -1 ? _lunchRating : _lunchRating = calculateLunchRating(); } }
+
+        private float _professorRating = -1;
+        public float professorRating
+        { get { return _professorRating != -1 ? _professorRating : _professorRating = calculateProfessorRating() * 20; } }
+
+        private double _distanceRating = -1;
+        public double distanceRating
+        { get { return _distanceRating != -1 ? _distanceRating : _distanceRating = calculateDistanceRating(); } }
+
+        private double _proximityRating = -1;
+        public double proximityRating
+        { get { return _proximityRating != -1 ? _proximityRating : _proximityRating = calculateProximityRating(LectureList); } }
+
+        private double _Rating = -1;
+        public double Rating
+        { get { return _Rating != -1 ? _Rating : 
+                    _Rating = Math.Round(gapRating + lunchRating + professorRating + distanceRating + proximityRating, 2); } }
+
+        public List<Course> Courses = new List<Course>();*/
+
         private List<Course> mCourses
         { get { return sortCoursesByTime(processSchedule("M")); } }
         private List<Course> tCourses
@@ -261,8 +321,8 @@ namespace TheWarriorScheduler
         public int gapRating
         { get { return calculateGapRating(); } }
 
-        public int lunchRating
-        { get { return calculateLunchRating(); } }
+        public double lunchRating
+        { get { return calculateLunchRating() / 5; } }
 
         public float professorRating
         { get { return calculateProfessorRating() * 20; } }
@@ -271,10 +331,11 @@ namespace TheWarriorScheduler
         { get { return calculateDistanceRating(); } }
 
         public double proximityRating
-        { get { return calculateProximityRating(LectureList); } }
+        { get { return calculateProximityRating(LectureList) * 5; } }
 
         public double Rating
-        { get
+        {
+            get
             { return Math.Round(gapRating + lunchRating + professorRating + distanceRating + proximityRating, 2); }
         }
 
