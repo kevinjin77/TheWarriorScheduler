@@ -15,9 +15,9 @@ An application to find the best possible schedules for Waterloo students. (WIP)
    - Let user determine which factors they care about and how much they care about it (weighting).
 
 #### General Stuff:
-   - Include TUT, TST in Schedule
-   - *Accomodate ENG Classes (One Lecture, Multiple Classes)*
+   - *Include TUT, TST in Schedule*
       - Implemented, but extremely slow due to sheer amount of combinations. Need to look into optimizing algorithm.
+   - Accomodate ENG Classes (One Lecture, Multiple Classes)
    - Show Open Classes Only (Or Blue Square if class if full, eventually take reserves into account)
    - ~~Accomodate Online Classes (No Start Time, End Time, Weekdays)~~ **✓**
       - Still having issues with SCI 238
