@@ -12,7 +12,7 @@ An application to find the best possible schedules for Waterloo students. (WIP)
    - ~~Early Bird/Night Owl Filter (No 8:30/Night Classes, if possible)~~ **✓**
    - Early Bird/Night Owl Rating
    - ~~Proximity Rating (Least number of changes from current schedule, if given one)~~ **✓**
-   - Scale Individual Ratings out of 100, scale overall ratings based on importance (Professor Rating > Gap Rating)
+   - Let user determine which factors they care about and how much they care about it (weighting).
 
 #### General Stuff:
    - Include TUT, TST in Schedule
