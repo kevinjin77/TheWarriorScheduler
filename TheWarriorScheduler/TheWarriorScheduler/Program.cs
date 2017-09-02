@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -98,14 +99,24 @@ namespace TheWarriorScheduler
                 }
             }
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             List<Schedule> resulter = new List<Schedule>();
             resulter = ScheduleHelper.generateSchedules(responseList, earlyBirdFilter, nightFilter, lectureList);
+            Console.WriteLine($"\nFinished generating {resulter.Count} schedules in {(double) sw.ElapsedMilliseconds / 1000} seconds.");
+
             File.WriteAllText(@"test.txt", String.Empty);
+            sw.Reset();
+            sw.Start();
+
             for (int i = 0; i < resulter.Count; ++i)
             {
                 resulter[i].printSchedule();
             }
-            //ScheduleStats stats = resulter[0].ComputeStats();
+
+            Console.WriteLine($"\nFinished printing {resulter.Count} schedules in {(double)sw.ElapsedMilliseconds / 1000} seconds.");
+            sw.Stop();
             Console.ReadLine();
         }
 
